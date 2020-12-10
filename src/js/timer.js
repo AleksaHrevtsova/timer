@@ -1,6 +1,6 @@
 import refs from "../refs/timerRefs.js";
 console.log(refs);
-let day = `Sep 27 2020 08:00:00`;
+let day = `Dec 27 2020 08:00:00`;
 
 // ======
 function setTime(time) {
@@ -26,13 +26,51 @@ function myTimer(date, object) {
   object.seconds.textContent = x.seconds;
 }
 let interval;
+
+// =========== CLASS TIMER =======
+
+class Timer {
+  constructor(date, obj) {
+    this.date = date;
+    this.refs = obj;
+  }
+  count() {
+    let x = setTime(new Date(this.date) - Date.now());
+    console.log(x);
+    this.refs.days.textContent = x.days;
+    this.refs.hours.textContent = x.hours;
+    this.refs.mins.textContent = x.mins;
+    this.refs.seconds.textContent = x.seconds;
+    //
+  }
+
+  start() {
+    interval = setInterval(() => {
+      this.count();
+    }, 1000);
+  }
+  stop() {
+    const { days, hours, mins, seconds } = this.refs;
+    clearInterval(interval);
+    reset(days, hours, mins, seconds);
+  }
+}
+const timer = new Timer(day, refs);
+console.log(timer);
+
 refs.start.addEventListener("click", () => {
-  interval = setInterval(() => {
-    myTimer(day, refs);
-  }, 1000);
+  // interval = setInterval(() => {
+  //   myTimer(day, refs);
+  // }, 1000);
+
+  // ==== by Class
+  timer.start();
 });
 
 refs.stop.addEventListener("click", () => {
-  clearInterval(interval);
-  reset(refs.days, refs.hours, refs.mins, refs.seconds);
+  // clearInterval(interval);
+  // reset(refs.days, refs.hours, refs.mins, refs.seconds);
+
+  // ==== by Class
+  timer.stop();
 });
